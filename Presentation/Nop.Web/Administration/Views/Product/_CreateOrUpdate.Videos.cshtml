@@ -1,0 +1,53 @@
+﻿@model ProductModel
+
+<div class="panel-group">
+    @if (Model.Id > 0)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @T("Admin.Catalog.Products.Videos.AddNew")
+            </div>
+            <div class="panel-body">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#addProductVideo').click(function() {
+                            
+                        });
+                    });
+                </script>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.AddVideoModel.VideoUrl)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.AddVideoModel.VideoUrl)
+                        @Html.ValidationMessageFor(model => model.AddVideoModel.VideoUrl)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.AddVideoModel.DisplayOrder)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.AddVideoModel.DisplayOrder)
+                        @Html.ValidationMessageFor(model => model.AddVideoModel.DisplayOrder)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-md-9 col-md-offset-3">
+                        <button type="button" id="addProductVideo" class="btn btn-primary">@T("Admin.Catalog.Products.Videos.AddButton")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @T("Admin.Catalog.Products.Pictures.SaveBeforeEdit")
+            </div>
+        </div>
+    }
+</div>

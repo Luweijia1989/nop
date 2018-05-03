@@ -20,6 +20,7 @@ namespace Nop.Admin.Models.Catalog
             ProductPictureModels = new List<ProductPictureModel>();
             CopyProductModel = new CopyProductModel();
             AddPictureModel = new ProductPictureModel();
+            AddVideoModel = new ProductVideoModel();
             AddSpecificationAttributeModel = new AddProductSpecificationAttributeModel();
             ProductWarehouseInventoryModels = new List<ProductWarehouseInventoryModel>();
             ProductEditorSettingsModel = new ProductEditorSettingsModel();
@@ -431,6 +432,8 @@ namespace Nop.Admin.Models.Catalog
         
         //pictures
         public ProductPictureModel AddPictureModel { get; set; }
+
+        public ProductVideoModel AddVideoModel { get; set; }
         public IList<ProductPictureModel> ProductPictureModels { get; set; }
 
         //add specification attribute model
@@ -518,6 +521,18 @@ namespace Nop.Admin.Models.Catalog
 
             public IList<SelectListItem> AvailableAttributes { get; set; }
             public IList<SelectListItem> AvailableOptions { get; set; }
+        }
+
+        public partial class ProductVideoModel : BaseNopEntityModel
+        {
+            public int ProductId { get; set; }
+
+            [UIHint("Video")]
+            [NopResourceDisplayName("Admin.Catalog.Products.Videos.Fields.Video")]
+            public string VideoUrl { get; set; }
+
+            [NopResourceDisplayName("Admin.Catalog.Products.Videos.Fields.DisplayOrder")]
+            public int DisplayOrder { get; set; }
         }
         
         public partial class ProductPictureModel : BaseNopEntityModel

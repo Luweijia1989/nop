@@ -1,0 +1,32 @@
+﻿@model string
+
+@using Nop.Core;
+@using Nop.Web.Framework.UI;
+
+@{
+    //register CSS and JS
+   
+
+    var random = CommonHelper.GenerateRandomInteger();
+    var clientId = "video" + random;
+    var pictureService = EngineContext.Current.Resolve<Nop.Services.Media.IPictureService>();
+
+    const int pictureSize = 100;
+}
+
+<script src="@Url.Content("~/Scripts/qiniuuploader/qiniu.min.js")" type="text/javascript"></script>
+<button type="button" id="pickfiles" class="btn btn-primary">@T("Admin.Catalog.Products.Videos.UploadFile")</button>
+
+
+<script type="text/javascript">
+    var uplodd = 1
+    var uploader = qiniu.uploader({
+
+    });
+
+    $(document).ready(function () {
+        $('#pickfiles').click(function () {
+            alert('fffffffffffffffff')
+        });
+    });
+</script>
