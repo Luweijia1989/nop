@@ -529,6 +529,9 @@ namespace Nop.Admin.Models.Catalog
 
             [UIHint("Video")]
             [NopResourceDisplayName("Admin.Catalog.Products.Videos.Fields.Video")]
+            public int VideoId { get; set; }
+
+            [NopResourceDisplayName("Admin.Catalog.Products.Videos.Fields.Video")]
             public string VideoUrl { get; set; }
 
             [NopResourceDisplayName("Admin.Catalog.Products.Videos.Fields.DisplayOrder")]

@@ -41,6 +41,24 @@
 
         #endregion image/*
 
+        #region video/*
+
+        public const string VideoFlv = "video/x-flv";
+
+        public const string VideoMp4 = "video/mp4";
+
+        public const string VideoM3u8 = "application/x-mpegURL";
+
+        public const string VideoAvi = "video/x-msvideo";
+
+        public const string VideoWmv = "video/x-ms-wmv";
+
+        public const string Video3GP = "video/3gpp";
+
+        public const string VideoMov = "video/quicktime";
+
+        #endregion video/*
+
 
         #region text/*
 

@@ -54,6 +54,10 @@
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Qiniu, Version=7.2.15.0, Culture=neutral, PublicKeyToken=2894d75bb9f220bf, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Qiniu.Shared.7.2.15\lib\net45\Qiniu.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RedLock.StrongName, Version=1.7.4.0, Culture=neutral, PublicKeyToken=1dffde0a6c007f07, processorArchitecture=MSIL">
       <HintPath>..\..\packages\RedLock.net.StrongName.1.7.4\lib\net45\RedLock.StrongName.dll</HintPath>
       <Private>True</Private>
@@ -106,6 +110,7 @@
     <Compile Include="ComponentModel\GenericDictionaryTypeConverter.cs" />
     <Compile Include="ComponentModel\WriteLockDisposable.cs" />
     <Compile Include="Domain\Blogs\Events.cs" />
+    <Compile Include="Domain\Catalog\ProductVideo.cs" />
     <Compile Include="Domain\Common\DisplayDefaultMenuItemSettings.cs" />
     <Compile Include="Domain\Catalog\ProductEditorSettings.cs" />
     <Compile Include="Domain\Catalog\Events.cs" />
@@ -129,6 +134,7 @@
     <Compile Include="Domain\Discounts\RequirementGroupInteractionType.cs" />
     <Compile Include="Domain\Directory\RoundingType.cs" />
     <Compile Include="Domain\Forums\ForumPostVote.cs" />
+    <Compile Include="Domain\Media\Video.cs" />
     <Compile Include="Domain\Messages\MessageDelayPeriod.cs" />
     <Compile Include="Domain\Messages\QueuedEmailPriority.cs" />
     <Compile Include="Domain\Messages\MessageTemplateSystemNames.cs" />

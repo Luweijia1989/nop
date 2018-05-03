@@ -255,6 +255,7 @@ namespace Nop.Web.Framework
                 builder.RegisterType<PictureService>().As<IPictureService>().InstancePerLifetimeScope();
             }
 
+            builder.RegisterType<VideoService>().As<IVideoService>().InstancePerLifetimeScope();
             builder.RegisterType<MessageTemplateService>().As<IMessageTemplateService>().InstancePerLifetimeScope();
             builder.RegisterType<QueuedEmailService>().As<IQueuedEmailService>().InstancePerLifetimeScope();
             builder.RegisterType<NewsLetterSubscriptionService>().As<INewsLetterSubscriptionService>().InstancePerLifetimeScope();
