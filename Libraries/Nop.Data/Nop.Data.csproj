@@ -71,11 +71,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\Catalog\PredefinedProductAttributeValueMap.cs" />
+    <Compile Include="Mapping\Catalog\ProductVideoMap.cs" />
     <Compile Include="Mapping\Catalog\StockQuantityHistoryMap.cs" />
     <Compile Include="Mapping\Common\AddressAttributeMap.cs" />
     <Compile Include="Mapping\Common\AddressAttributeValueMap.cs" />
     <Compile Include="Mapping\Customers\CustomerPasswordMap.cs" />
     <Compile Include="Mapping\Forums\ForumPostVoteMap.cs" />
+    <Compile Include="Mapping\Media\VideoMap.cs" />
     <Compile Include="Mapping\Orders\ReturnRequestReason.cs" />
     <Compile Include="Mapping\Orders\ReturnRequestAction.cs" />
     <Compile Include="Mapping\Shipping\ProductAvailabilityRangeMap.cs" />

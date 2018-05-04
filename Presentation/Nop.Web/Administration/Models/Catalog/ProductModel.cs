@@ -18,6 +18,7 @@ namespace Nop.Admin.Models.Catalog
         {
             Locales = new List<ProductLocalizedModel>();
             ProductPictureModels = new List<ProductPictureModel>();
+            ProductVideoModels = new List<ProductVideoModel>();
             CopyProductModel = new CopyProductModel();
             AddPictureModel = new ProductPictureModel();
             AddVideoModel = new ProductVideoModel();
@@ -436,6 +437,7 @@ namespace Nop.Admin.Models.Catalog
         public ProductVideoModel AddVideoModel { get; set; }
         public IList<ProductPictureModel> ProductPictureModels { get; set; }
 
+        public IList<ProductVideoModel> ProductVideoModels { get; set; }
         //add specification attribute model
         public AddProductSpecificationAttributeModel AddSpecificationAttributeModel { get; set; }
 

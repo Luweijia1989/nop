@@ -16,6 +16,7 @@ namespace Nop.Core.Domain.Catalog
         private ICollection<ProductCategory> _productCategories;
         private ICollection<ProductManufacturer> _productManufacturers;
         private ICollection<ProductPicture> _productPictures;
+        private ICollection<ProductVideo> _productVideos;
         private ICollection<ProductReview> _productReviews;
         private ICollection<ProductSpecificationAttribute> _productSpecificationAttributes;
         private ICollection<ProductTag> _productTags;
@@ -633,6 +634,15 @@ namespace Nop.Core.Domain.Catalog
         {
             get { return _productPictures ?? (_productPictures = new List<ProductPicture>()); }
             protected set { _productPictures = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the collection of ProductPicture
+        /// </summary>
+        public virtual ICollection<ProductVideo> ProductVideos
+        {
+            get { return _productVideos ?? (_productVideos = new List<ProductVideo>()); }
+            protected set { _productVideos = value; }
         }
 
         /// <summary>
