@@ -132,12 +132,14 @@
                         @Html.Partial("_ShareButton", Model)
                         @Html.Widget("productdetails_overview_bottom", Model.Id)
                     </div>
+                    @Html.Partial("_ProductVideos", Model)
                     @if (!String.IsNullOrEmpty(Model.FullDescription))
                     {
                         <div class="full-description" itemprop="description">
                             @Html.Raw(Model.FullDescription)
                         </div>
                     }
+                    @Html.Partial("_ProductMap", Model)
                 </div>
                 @Html.Widget("productdetails_before_collateral", Model.Id)
                 <div class="product-collateral">

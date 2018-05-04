@@ -1,0 +1,31 @@
+﻿@model ProductDetailsModel
+@using Nop.Web.Models.Catalog;
+
+@{
+    Html.AddScriptParts("http://cache.amap.com/lbs/static/addToolbar.js");
+    Html.AddScriptParts("http://webapi.amap.com/maps?v=1.4.6&key=50ea63dd74b18ca22c7148957bb20373");
+}
+
+<style>
+    .ppp{ height:480px;} 
+</style>    
+<body>
+    <div id="container" class="ppp"></div>
+    <script>
+    var map = new AMap.Map('container', {
+        resizeEnable: true
+    });
+
+    AMap.service(["AMap.PlaceSearch"], function () {
+        var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
+            pageSize: 1,
+            pageIndex: 1,
+            map: map
+        });
+        //关键字查询
+        placeSearch.search('上海市古浪路518弄242号', function (status, result) {
+            map.setZoom(15)
+        });
+    });
+    </script>
+</body>

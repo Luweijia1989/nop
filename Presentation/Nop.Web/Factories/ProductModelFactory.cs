@@ -1023,7 +1023,8 @@ namespace Nop.Web.Factories
             {
                 var videoModel = new VideoModel
                 {
-                    VideoUrl = _videoService.GetVideoUrl(video)
+                    VideoUrl = _videoService.GetVideoUrl(video),
+                    VideoThumbUrl = _videoService.GetVideoThumbUrl(video)
                 };
 
                 videoModels.Add(videoModel);
