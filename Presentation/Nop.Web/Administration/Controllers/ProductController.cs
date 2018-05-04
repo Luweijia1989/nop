@@ -63,6 +63,7 @@ namespace Nop.Admin.Controllers
         private readonly ILocalizedEntityService _localizedEntityService;
         private readonly ISpecificationAttributeService _specificationAttributeService;
         private readonly IPictureService _pictureService;
+        private readonly IVideoService _videoService;
         private readonly ITaxCategoryService _taxCategoryService;
         private readonly IProductTagService _productTagService;
         private readonly ICopyProductService _copyProductService;
@@ -112,6 +113,7 @@ namespace Nop.Admin.Controllers
             ILocalizedEntityService localizedEntityService,
             ISpecificationAttributeService specificationAttributeService,
             IPictureService pictureService,
+            IVideoService videoService,
             ITaxCategoryService taxCategoryService,
             IProductTagService productTagService,
             ICopyProductService copyProductService,
@@ -157,6 +159,7 @@ namespace Nop.Admin.Controllers
             this._localizedEntityService = localizedEntityService;
             this._specificationAttributeService = specificationAttributeService;
             this._pictureService = pictureService;
+            this._videoService = videoService;
             this._taxCategoryService = taxCategoryService;
             this._productTagService = productTagService;
             this._copyProductService = copyProductService;
@@ -2127,6 +2130,145 @@ namespace Nop.Admin.Controllers
         }
 
         #endregion
+
+
+        #region Product videos
+
+        [ValidateInput(false)]
+        public virtual ActionResult ProductVideoAdd(int videoId, int displayOrder, int productId)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+                return AccessDeniedView();
+
+            if (videoId == 0)
+                throw new ArgumentException();
+
+            var product = _productService.GetProductById(productId);
+            if (product == null)
+                throw new ArgumentException("No product found with the specified id");
+
+            //a vendor should have access only to his products
+            if (_workContext.CurrentVendor != null && product.VendorId != _workContext.CurrentVendor.Id)
+                return RedirectToAction("List");
+
+            var video = _videoService.GetVideoById(videoId);
+            if (video == null)
+                throw new ArgumentException("No video found with the specified id");
+
+            _productService.InsertProductVideo(new ProductVideo
+            {
+                VideoId = videoId,
+                ProductId = productId,
+                DisplayOrder = displayOrder,
+            });
+
+            return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public virtual ActionResult ProductVideoList(DataSourceRequest command, int productId)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+                return AccessDeniedKendoGridJson();
+
+            //a vendor should have access only to his products
+            if (_workContext.CurrentVendor != null)
+            {
+                var product = _productService.GetProductById(productId);
+                if (product != null && product.VendorId != _workContext.CurrentVendor.Id)
+                {
+                    return Content("This is not your product");
+                }
+            }
+
+            var productVideos = _productService.GetProductVideosByProductId(productId);
+            var productVideosModel = productVideos
+                .Select(x =>
+                {
+                    var video = _videoService.GetVideoById(x.VideoId);
+                    if (video == null)
+                        throw new Exception("Video cannot be loaded");
+                    var m = new ProductModel.ProductVideoModel
+                    {
+                        Id = x.Id,
+                        ProductId = x.ProductId,
+                        VideoId = x.VideoId,
+                        VideoUrl = _videoService.GetVideoUrl(video),
+                        VideoThumbUrl = _videoService.GetVideoThumbUrl(video),
+                        DisplayOrder = x.DisplayOrder
+                    };
+                    return m;
+                })
+                .ToList();
+
+            var gridModel = new DataSourceResult
+            {
+                Data = productVideosModel,
+                Total = productVideosModel.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        public virtual ActionResult ProductVideoUpdate(ProductModel.ProductVideoModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+                return AccessDeniedView();
+
+            var productVideo = _productService.GetProductVideoById(model.Id);
+            if (productVideo == null)
+                throw new ArgumentException("No product video found with the specified id");
+
+            //a vendor should have access only to his products
+            if (_workContext.CurrentVendor != null)
+            {
+                var product = _productService.GetProductById(productVideo.ProductId);
+                if (product != null && product.VendorId != _workContext.CurrentVendor.Id)
+                {
+                    return Content("This is not your product");
+                }
+            }
+
+            productVideo.DisplayOrder = model.DisplayOrder;
+            _productService.UpdateProductVideo(productVideo);
+
+            return new NullJsonResult();
+        }
+
+        [HttpPost]
+        public virtual ActionResult ProductVideoDelete(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+                return AccessDeniedView();
+
+            var productVideo = _productService.GetProductVideoById(id);
+            if (productVideo == null)
+                throw new ArgumentException("No product video found with the specified id");
+
+            var productId = productVideo.ProductId;
+
+            //a vendor should have access only to his products
+            if (_workContext.CurrentVendor != null)
+            {
+                var product = _productService.GetProductById(productId);
+                if (product != null && product.VendorId != _workContext.CurrentVendor.Id)
+                {
+                    return Content("This is not your product");
+                }
+            }
+            var videoId = productVideo.VideoId;
+            _productService.DeleteProductVideo(productVideo);
+
+            var video = _videoService.GetVideoById(videoId);
+            if (video == null)
+                throw new ArgumentException("No video found with the specified id");
+            _videoService.DeleteVideo(video);
+
+            return new NullJsonResult();
+        }
+
+        #endregion 
 
         #region Product pictures
 

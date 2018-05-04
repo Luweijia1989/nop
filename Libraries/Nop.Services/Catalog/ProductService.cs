@@ -51,6 +51,7 @@ namespace Nop.Services.Catalog
         private readonly IRepository<AclRecord> _aclRepository;
         private readonly IRepository<StoreMapping> _storeMappingRepository;
         private readonly IRepository<ProductPicture> _productPictureRepository;
+        private readonly IRepository<ProductVideo> _productVideoRepository;
         private readonly IRepository<ProductSpecificationAttribute> _productSpecificationAttributeRepository;
         private readonly IRepository<ProductReview> _productReviewRepository;
         private readonly IRepository<ProductWarehouseInventory> _productWarehouseInventoryRepository;
@@ -111,6 +112,7 @@ namespace Nop.Services.Catalog
             IRepository<CrossSellProduct> crossSellProductRepository,
             IRepository<TierPrice> tierPriceRepository,
             IRepository<ProductPicture> productPictureRepository,
+            IRepository<ProductVideo> productVideoRepository,
             IRepository<LocalizedProperty> localizedPropertyRepository,
             IRepository<AclRecord> aclRepository,
             IRepository<StoreMapping> storeMappingRepository,
@@ -139,6 +141,7 @@ namespace Nop.Services.Catalog
             this._crossSellProductRepository = crossSellProductRepository;
             this._tierPriceRepository = tierPriceRepository;
             this._productPictureRepository = productPictureRepository;
+            this._productVideoRepository = productVideoRepository;
             this._localizedPropertyRepository = localizedPropertyRepository;
             this._aclRepository = aclRepository;
             this._storeMappingRepository = storeMappingRepository;
@@ -1861,6 +1864,21 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
+        /// Deletes a product video
+        /// </summary>
+        /// <param name="productVideo">Product video</param>
+        public virtual void DeleteProductVideo(ProductVideo productVideo)
+        {
+            if (productVideo == null)
+                throw new ArgumentNullException("productVideo");
+
+            _productVideoRepository.Delete(productVideo);
+
+            //event notification
+            _eventPublisher.EntityDeleted(productVideo);
+        }
+
+        /// <summary>
         /// Gets a product pictures by product identifier
         /// </summary>
         /// <param name="productId">The product identifier</param>
@@ -1876,6 +1894,21 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
+        /// Gets a product pictures by product identifier
+        /// </summary>
+        /// <param name="productId">The product identifier</param>
+        /// <returns>Product pictures</returns>
+        public virtual IList<ProductVideo> GetProductVideosByProductId(int productId)
+        {
+            var query = from pp in _productVideoRepository.Table
+                        where pp.ProductId == productId
+                        orderby pp.DisplayOrder, pp.Id
+                        select pp;
+            var productVideos = query.ToList();
+            return productVideos;
+        }
+
+        /// <summary>
         /// Gets a product picture
         /// </summary>
         /// <param name="productPictureId">Product picture identifier</param>
@@ -1886,6 +1919,19 @@ namespace Nop.Services.Catalog
                 return null;
 
             return _productPictureRepository.GetById(productPictureId);
+        }
+
+        /// <summary>
+        /// Gets a product video
+        /// </summary>
+        /// <param name="productVideoId">Product video identifier</param>
+        /// <returns>Product video</returns>
+        public virtual ProductVideo GetProductVideoById(int productVideoId)
+        {
+            if (productVideoId == 0)
+                return null;
+
+            return _productVideoRepository.GetById(productVideoId);
         }
 
         /// <summary>
@@ -1904,6 +1950,21 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
+        /// Inserts a product video
+        /// </summary>
+        /// <param name="productPicture">Product picture</param>
+        public virtual void InsertProductVideo(ProductVideo productVideo)
+        {
+            if (productVideo == null)
+                throw new ArgumentNullException("productVideo");
+
+            _productVideoRepository.Insert(productVideo);
+
+            //event notification
+            _eventPublisher.EntityInserted(productVideo);
+        }
+
+        /// <summary>
         /// Updates a product picture
         /// </summary>
         /// <param name="productPicture">Product picture</param>
@@ -1916,6 +1977,21 @@ namespace Nop.Services.Catalog
 
             //event notification
             _eventPublisher.EntityUpdated(productPicture);
+        }
+
+        /// <summary>
+        /// Updates a product video
+        /// </summary>
+        /// <param name="productVideo">Product video</param>
+        public virtual void UpdateProductVideo(ProductVideo productVideo)
+        {
+            if (productVideo == null)
+                throw new ArgumentNullException("productVideo");
+
+            _productVideoRepository.Update(productVideo);
+
+            //event notification
+            _eventPublisher.EntityUpdated(productVideo);
         }
 
         /// <summary>

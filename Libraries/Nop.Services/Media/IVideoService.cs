@@ -19,5 +19,11 @@ namespace Nop.Services.Media
         string GetVideoThumbUrl(Video video);
 
         string GetDefaultVideoThumbUrl();
+
+        /// <summary>
+        /// Deletes a video
+        /// </summary>
+        /// <param name="video">Video</param>
+        void DeleteVideo(Video video);
     }
 }

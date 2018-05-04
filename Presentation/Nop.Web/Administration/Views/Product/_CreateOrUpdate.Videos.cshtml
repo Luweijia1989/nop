@@ -4,6 +4,108 @@
     @if (Model.Id > 0)
     {
         <div class="panel panel-default">
+            <div class="panel-body">
+                <div id="productvideos-grid"></div>
+
+                <script>
+                    $(document).ready(function() {
+                        $("#productvideos-grid").kendoGrid({
+                            dataSource: {
+                                type: "json",
+                                transport: {
+                                    read: {
+                                        url: "@Html.Raw(Url.Action("ProductVideoList", "Product", new {productId = Model.Id}))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    },
+                                    update: {
+                                        url: "@Html.Raw(Url.Action("ProductVideoUpdate", "Product"))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    },
+                                    destroy: {
+                                        url: "@Html.Raw(Url.Action("ProductVideoDelete", "Product"))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    }
+                                },
+                                schema: {
+                                    data: "Data",
+                                    total: "Total",
+                                    errors: "Errors",
+                                    model: {
+                                        id: "Id",
+                                        fields: {
+                                            VideoUrl: { editable: false, type: "string" },
+                                            DisplayOrder: { editable: true, type: "number" }
+                                        }
+                                    }
+                                },
+                                requestEnd: function(e) {
+                                    if (e.type == "update") {
+                                        this.read();
+                                    }
+                                },
+                                error: function(e) {
+                                    display_kendoui_grid_error(e);
+                                    // Cancel the changes
+                                    this.cancelChanges();
+                                },
+                                serverPaging: true,
+                                serverFiltering: true,
+                                serverSorting: true
+                            },
+                            pageable: {
+                                refresh: true,
+                                numeric: false,
+                                previousNext: false,
+                                info: false,
+                                @Html.Partial("_GridPagerMessages")
+                            },
+                            editable: {
+                                confirmation: "@T("Admin.Common.DeleteConfirmation")",
+                                mode: "inline"
+                            },
+                            scrollable: false,
+                            columns: [
+                            {
+                                field: "VideoUrl",
+                                title: "@T("Admin.Catalog.Products.Videos.Fields.Video")",
+                                template: '<a href="#=VideoUrl#" target="_blank"><img alt="#=VideoId#" src="#=VideoThumbUrl#" width="150" /></a>',
+                                width: 200
+                            }, {
+                                field: "DisplayOrder",
+                                title: "@T("Admin.Catalog.Products.Videos.Fields.DisplayOrder")",
+                                //integer format
+                                format: "{0:0}",
+                                width: 150
+                            }, {
+                                command: [
+                                {
+                                    name: "edit",
+                                    text: {
+                                        edit: "@T("Admin.Common.Edit")",
+                                        update: "@T("Admin.Common.Update")",
+                                        cancel: "@T("Admin.Common.Cancel")"
+                                    }
+                                }, {
+                                    name: "destroy",
+                                    text: "@T("Admin.Common.Delete")"
+                                }
+                                ],
+                                width: 200
+                            }
+                            ]
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
             <div class="panel-heading">
                 @T("Admin.Catalog.Products.Videos.AddNew")
             </div>
@@ -11,7 +113,38 @@
                 <script type="text/javascript">
                     $(document).ready(function() {
                         $('#addProductVideo').click(function() {
-                            
+                            var videoId = $("#@Html.FieldIdFor(model => model.AddVideoModel.VideoId)").val();
+                            var displayOrder = $("#@Html.FieldIdFor(model => model.AddPictureModel.DisplayOrder)").val();
+
+                            if (videoId == 0) {
+                                alert('Upload video first');
+                                return;
+                            }
+
+                            $('#addProductVideo').attr('disabled', true);
+
+                            var postData = {
+                                videoId: videoId,
+                                displayOrder: displayOrder,
+                                productId: @Model.Id
+                            };
+                            addAntiForgeryToken(postData);
+
+                            $.ajax({
+                                cache: false,
+                                type: "POST",
+                                url: "@(Url.Action("ProductVideoAdd", "Product"))",
+                                data: postData,
+                                success: function(data) {
+                                    var grid = $("#productvideos-grid");
+                                    grid.data('kendoGrid').dataSource.read();
+                                    $('#addProductVideo').attr('disabled', false);
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                    alert('Failed to add product video.');
+                                    $('#addProductVideo').attr('disabled', false);
+                                }
+                            });
                         });
                     });
                 </script>
@@ -46,7 +179,7 @@
     {
         <div class="panel panel-default">
             <div class="panel-body">
-                @T("Admin.Catalog.Products.Pictures.SaveBeforeEdit")
+                @T("Admin.Catalog.Products.Videos.SaveBeforeEdit")
             </div>
         </div>
     }

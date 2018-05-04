@@ -536,6 +536,9 @@ namespace Nop.Admin.Models.Catalog
             [NopResourceDisplayName("Admin.Catalog.Products.Videos.Fields.Video")]
             public string VideoUrl { get; set; }
 
+            [NopResourceDisplayName("Admin.Catalog.Products.Videos.Fields.VideoThumb")]
+            public string VideoThumbUrl { get; set; }
+
             [NopResourceDisplayName("Admin.Catalog.Products.Videos.Fields.DisplayOrder")]
             public int DisplayOrder { get; set; }
         }

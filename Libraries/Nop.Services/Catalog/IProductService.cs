@@ -440,11 +440,24 @@ namespace Nop.Services.Catalog
         void DeleteProductPicture(ProductPicture productPicture);
 
         /// <summary>
+        /// Deletes a product video
+        /// </summary>
+        /// <param name="productVideo">Product video</param>
+        void DeleteProductVideo(ProductVideo productVideo);
+
+        /// <summary>
         /// Gets a product pictures by product identifier
         /// </summary>
         /// <param name="productId">The product identifier</param>
         /// <returns>Product pictures</returns>
         IList<ProductPicture> GetProductPicturesByProductId(int productId);
+
+        /// <summary>
+        /// Gets a product videos by product identifier
+        /// </summary>
+        /// <param name="productId">The product identifier</param>
+        /// <returns>Product videos</returns>
+        IList<ProductVideo> GetProductVideosByProductId(int productId);
 
         /// <summary>
         /// Gets a product picture
@@ -454,16 +467,35 @@ namespace Nop.Services.Catalog
         ProductPicture GetProductPictureById(int productPictureId);
 
         /// <summary>
+        /// Gets a product video
+        /// </summary>
+        /// <param name="productVideoId">Product video identifier</param>
+        /// <returns>Product video</returns>
+        ProductVideo GetProductVideoById(int productVideoId);
+
+        /// <summary>
         /// Inserts a product picture
         /// </summary>
         /// <param name="productPicture">Product picture</param>
         void InsertProductPicture(ProductPicture productPicture);
 
         /// <summary>
+        /// Inserts a product video
+        /// </summary>
+        /// <param name="productPicture">Product Video</param>
+        void InsertProductVideo(ProductVideo productVideo);
+
+        /// <summary>
         /// Updates a product picture
         /// </summary>
         /// <param name="productPicture">Product picture</param>
         void UpdateProductPicture(ProductPicture productPicture);
+
+        /// <summary>
+        /// Updates a product video
+        /// </summary>
+        /// <param name="productVideo">Product video</param>
+        void UpdateProductVideo(ProductVideo productVideo);
 
         /// <summary>
         /// Get the IDs of all product images 

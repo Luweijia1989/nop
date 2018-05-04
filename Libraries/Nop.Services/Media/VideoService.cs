@@ -26,6 +26,7 @@ namespace Nop.Services.Media
         private readonly IDbContext _dbContext;
         private readonly ISettingService _settingService;
         private readonly IWebHelper _webHelper;
+        private readonly IEventPublisher _eventPublisher;
 
         private string ak = "0a7txWBaXeWgxHgA-rvYl-ouKgS5J75ITLaWaUo-";
         private string sk = "Ep15IyuVbQeVIcj5zi0DGgUzwW3TS-3Vl3PqEAbZ";
@@ -37,7 +38,8 @@ namespace Nop.Services.Media
             IRepository<ProductVideo> productVideoRepository,
             IDbContext dbContext,
             ISettingService settingService,
-            IWebHelper webHelper
+            IWebHelper webHelper,
+            IEventPublisher eventPublisher
             )
         {
             this._videoRepository = videoRepository;
@@ -45,6 +47,7 @@ namespace Nop.Services.Media
             this._dbContext = dbContext;
             this._settingService = settingService;
             this._webHelper = webHelper;
+            this._eventPublisher = eventPublisher;
 
             mac = new Mac(ak, sk);
         }
@@ -78,6 +81,8 @@ namespace Nop.Services.Media
             };
             _videoRepository.Insert(video);
 
+            _eventPublisher.EntityInserted(video);
+
             return video;
         }
 
@@ -100,6 +105,18 @@ namespace Nop.Services.Media
             var defaultImageFileName = _settingService.GetSettingByKey("Media.DefaultImageName", "default-image.png");
                     
             return _webHelper.GetStoreLocation() + "content/images/" + defaultImageFileName;
+        }
+
+        public void DeleteVideo(Video video)
+        {
+            if (video == null)
+                throw new ArgumentNullException("video");
+
+            //delete from database
+            _videoRepository.Delete(video);
+
+            //event notification
+            _eventPublisher.EntityDeleted(video);
         }
     }
 }
