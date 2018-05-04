@@ -13,6 +13,8 @@ using Qiniu.Http;
 
 using System;
 using Nop.Services.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Nop.Services.Media
 {
@@ -117,6 +119,25 @@ namespace Nop.Services.Media
 
             //event notification
             _eventPublisher.EntityDeleted(video);
+        }
+
+        public IList<Video> GetVideosByProductId(int productId, int recordsToReturn = 0)
+        {
+            if (productId == 0)
+                return new List<Video>();
+
+
+            var query = from p in _videoRepository.Table
+                        join pp in _productVideoRepository.Table on p.Id equals pp.VideoId
+                        orderby pp.DisplayOrder, pp.Id
+                        where pp.ProductId == productId
+                        select p;
+
+            if (recordsToReturn > 0)
+                query = query.Take(recordsToReturn);
+
+            var vids = query.ToList();
+            return vids;
         }
     }
 }

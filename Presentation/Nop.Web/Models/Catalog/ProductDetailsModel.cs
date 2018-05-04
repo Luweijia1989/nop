@@ -17,6 +17,7 @@ namespace Nop.Web.Models.Catalog
             PictureModels = new List<PictureModel>();
             GiftCard = new GiftCardModel();
             ProductPrice = new ProductPriceModel();
+            VideoModels = new List<VideoModel>();
             AddToCart = new AddToCartModel();
             ProductAttributes = new List<ProductAttributeModel>();
             AssociatedProducts = new List<ProductDetailsModel>();
@@ -33,6 +34,8 @@ namespace Nop.Web.Models.Catalog
         public bool DefaultPictureZoomEnabled { get; set; }
         public PictureModel DefaultPictureModel { get; set; }
         public IList<PictureModel> PictureModels { get; set; }
+
+        public IList<VideoModel> VideoModels { get; set; }
 
         public string Name { get; set; }
         public string ShortDescription { get; set; }

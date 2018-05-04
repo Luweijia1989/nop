@@ -392,6 +392,7 @@
     <Compile Include="Models\Common\LanguageSelectorModel.cs" />
     <Compile Include="Models\Common\SitemapModel.cs" />
     <Compile Include="Models\Customer\EmailRevalidationModel.cs" />
+    <Compile Include="Models\Media\VideoModel.cs" />
     <Compile Include="Models\Vendors\ApplyVendorModel.cs" />
     <Compile Include="Models\Customer\CustomerAttributeModel.cs" />
     <Compile Include="Models\Catalog\CustomerBackInStockSubscriptionsModel.cs" />

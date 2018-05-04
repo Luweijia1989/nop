@@ -52,6 +52,7 @@ namespace Nop.Web.Factories
         private readonly ITaxService _taxService;
         private readonly ICurrencyService _currencyService;
         private readonly IPictureService _pictureService;
+        private readonly IVideoService _videoService;
         private readonly ILocalizationService _localizationService;
         private readonly IMeasureService _measureService;
         private readonly IPriceCalculationService _priceCalculationService;
@@ -89,6 +90,7 @@ namespace Nop.Web.Factories
             ITaxService taxService,
             ICurrencyService currencyService,
             IPictureService pictureService,
+            IVideoService videoService,
             ILocalizationService localizationService,
             IMeasureService measureService,
             IPriceCalculationService priceCalculationService,
@@ -122,6 +124,7 @@ namespace Nop.Web.Factories
             this._taxService = taxService;
             this._currencyService = currencyService;
             this._pictureService = pictureService;
+            this._videoService = videoService;
             this._localizationService = localizationService;
             this._measureService = measureService;
             this._priceCalculationService = priceCalculationService;
@@ -1004,6 +1007,31 @@ namespace Nop.Web.Factories
         }
 
         /// <summary>
+        /// Prepare the product details video model
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <returns>list of video models for all product videos</returns>
+        protected virtual dynamic PrepareProductVideoModel(Product product)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            var videos = _videoService.GetVideosByProductId(product.Id);
+
+            var videoModels = new List<VideoModel>();
+            foreach (var video in videos)
+            {
+                var videoModel = new VideoModel
+                {
+                    VideoUrl = _videoService.GetVideoUrl(video)
+                };
+
+                videoModels.Add(videoModel);
+            }
+            return videoModels;
+        }
+
+        /// <summary>
         /// Prepare the product details picture model
         /// </summary>
         /// <param name="product">Product</param>
@@ -1283,6 +1311,9 @@ namespace Nop.Web.Factories
             var pictureModels = PrepareProductDetailsPictureModel(product, isAssociatedProduct);
             model.DefaultPictureModel = pictureModels.DefaultPictureModel;
             model.PictureModels = pictureModels.PictureModels;
+
+            //videos
+            model.VideoModels = PrepareProductVideoModel(product);
 
             //price
             model.ProductPrice = PrepareProductPriceModel(product);

@@ -25,5 +25,13 @@ namespace Nop.Services.Media
         /// </summary>
         /// <param name="video">Video</param>
         void DeleteVideo(Video video);
+
+        /// <summary>
+        /// Gets videos by product identifier
+        /// </summary>
+        /// <param name="productId">Product identifier</param>
+        /// <param name="recordsToReturn">Number of records to return. 0 if you want to get all items</param>
+        /// <returns>Pictures</returns>
+        IList<Video> GetVideosByProductId(int productId, int recordsToReturn = 0);
     }
 }
