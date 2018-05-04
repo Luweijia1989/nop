@@ -21,6 +21,14 @@
 
 <div class="row">
     <div class="col-md-12">
+        <div id="@(clientId + "image")" class="uploaded-image" style="width:100px;">
+            <img src="@(videoService.GetVideoThumbUrl(video))" style="width:100%; height:100%"/>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
         @*fine uploader container*@
         <div id="@clientId" class="upload-image-button pull-left margin-t-5">
             <noscript>
@@ -81,11 +89,13 @@
             multiple: false
         }).on("complete", function(event, id, name, responseJSON, xhr) {
             if (responseJSON.success) {
+                $("#@(clientId + "image")").html("<img src='" + responseJSON.thumbUrl + "'style='width:100%; height:100%'/>");
                 $("#@(clientId + "value") input").val(responseJSON.videoId);
                 $("#@(clientId + "remove")").show();
             }
         });
-        $("#@(clientId + "remove")").click(function(e) {
+        $("#@(clientId + "remove")").click(function (e) {
+            $("#@(clientId + "image")").html("<img src='@videoService.GetDefaultVideoThumbUrl()'style='width:100%; height:100%'/>");
             $("#@(clientId + "value") input").val(0);
             $(this).hide();
         });

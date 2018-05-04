@@ -102,7 +102,8 @@ namespace Nop.Admin.Controllers
             {
                 success = true,
                 videoId = video.Id,
-                videoUrl = _videoService.GetVideoUrl(video)
+                videoUrl = _videoService.GetVideoUrl(video),
+                thumbUrl = _videoService.GetVideoThumbUrl(video)
             },
                 MimeTypes.TextPlain);
         }

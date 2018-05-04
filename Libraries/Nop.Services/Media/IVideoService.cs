@@ -15,5 +15,9 @@ namespace Nop.Services.Media
             bool isNew = true);
 
         string GetVideoUrl(Video video);
+
+        string GetVideoThumbUrl(Video video);
+
+        string GetDefaultVideoThumbUrl();
     }
 }

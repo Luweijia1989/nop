@@ -12,6 +12,7 @@ using Qiniu.IO.Model;
 using Qiniu.Http;
 
 using System;
+using Nop.Services.Configuration;
 
 namespace Nop.Services.Media
 {
@@ -23,6 +24,8 @@ namespace Nop.Services.Media
         private readonly IRepository<Video> _videoRepository;
         private readonly IRepository<ProductVideo> _productVideoRepository;
         private readonly IDbContext _dbContext;
+        private readonly ISettingService _settingService;
+        private readonly IWebHelper _webHelper;
 
         private string ak = "0a7txWBaXeWgxHgA-rvYl-ouKgS5J75ITLaWaUo-";
         private string sk = "Ep15IyuVbQeVIcj5zi0DGgUzwW3TS-3Vl3PqEAbZ";
@@ -32,12 +35,16 @@ namespace Nop.Services.Media
 
         public VideoService(IRepository<Video> videoRepository,
             IRepository<ProductVideo> productVideoRepository,
-            IDbContext dbContext
+            IDbContext dbContext,
+            ISettingService settingService,
+            IWebHelper webHelper
             )
         {
             this._videoRepository = videoRepository;
             this._productVideoRepository = productVideoRepository;
             this._dbContext = dbContext;
+            this._settingService = settingService;
+            this._webHelper = webHelper;
 
             mac = new Mac(ak, sk);
         }
@@ -60,7 +67,7 @@ namespace Nop.Services.Media
             string jstr = putPolicy.ToJsonString();
             string token = Auth.CreateUploadToken(mac, jstr);
             UploadManager um = new UploadManager();
-            //HttpResult result = um.UploadData(videoBinary, saveKey, token);
+            HttpResult result = um.UploadData(videoBinary, saveKey, token);
 
             var video = new Video
             {
@@ -76,7 +83,23 @@ namespace Nop.Services.Media
 
         public string GetVideoUrl(Video video)
         {
+            if (video == null)
+                return "";
             return videoDomain + video.VideoUrl;
+        }
+
+        public string GetVideoThumbUrl(Video video)
+        {
+            if (video == null)
+                return GetDefaultVideoThumbUrl();
+            return GetVideoUrl(video) + "?vframe/jpg/offset/1";
+        }
+
+        public string GetDefaultVideoThumbUrl()
+        { 
+            var defaultImageFileName = _settingService.GetSettingByKey("Media.DefaultImageName", "default-image.png");
+                    
+            return _webHelper.GetStoreLocation() + "content/images/" + defaultImageFileName;
         }
     }
 }
