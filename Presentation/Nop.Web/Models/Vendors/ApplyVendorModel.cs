@@ -20,6 +20,9 @@ namespace Nop.Web.Models.Vendors
         [NopResourceDisplayName("Vendors.ApplyAccount.Description")]
         [AllowHtml]
         public string Description { get; set; }
+
+        [NopResourceDisplayName("Vendors.ApplyAccount.DisplayAddress")]
+        public string DisplayAddress { get; set; }
         
         public bool DisplayCaptcha { get; set; }
 

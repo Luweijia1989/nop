@@ -146,7 +146,8 @@ namespace Nop.Web.Controllers
                     AllowCustomersToSelectPageSize = true,
                     PageSizeOptions = _vendorSettings.DefaultVendorPageSizeOptions,
                     PictureId = pictureId,
-                    Description = description
+                    Description = description,
+                    DisplayAddress = model.DisplayAddress
                 };
                 _vendorService.InsertVendor(vendor);
                 //search engine name (the same as vendor name)

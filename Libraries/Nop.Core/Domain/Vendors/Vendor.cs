@@ -37,6 +37,11 @@ namespace Nop.Core.Domain.Vendors
         public int AddressId { get; set; }
 
         /// <summary>
+        /// Gets or sets the display address
+        /// </summary>
+        public string DisplayAddress { get; set; }
+
+        /// <summary>
         /// Gets or sets the admin comment
         /// </summary>
         public string AdminComment { get; set; }
