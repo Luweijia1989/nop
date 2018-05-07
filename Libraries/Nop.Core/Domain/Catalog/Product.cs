@@ -479,9 +479,15 @@ namespace Nop.Core.Domain.Catalog
         /// </summary>
         public DateTime UpdatedOnUtc { get; set; }
 
+        /// <summary>
+        /// Gets or sets the display address of product
+        /// </summary>
+        public string DisplayAddress { get; set; }
 
-
-
+        /// <summary>
+        /// Gets or sets is use vendor address 
+        /// </summary>
+        public bool IsUseVendorAddress { get; set; }
 
 
         /// <summary>

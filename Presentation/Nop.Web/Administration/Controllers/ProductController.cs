@@ -1261,6 +1261,15 @@ namespace Nop.Admin.Controllers
                 product = model.ToEntity(product);
 
                 product.UpdatedOnUtc = DateTime.UtcNow;
+                Vendor vendor = _vendorService.GetVendorById(model.VendorId);
+                if (model.IsUseVendorAddress)
+                {
+                    if (vendor != null)
+                        product.DisplayAddress = vendor.DisplayAddress;
+                    else
+                        product.DisplayAddress = "";
+                }
+                
                 _productService.UpdateProduct(product);
                 //search engine name
                 model.SeName = product.ValidateSeName(model.SeName, product.Name, true);

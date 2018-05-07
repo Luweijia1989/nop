@@ -213,6 +213,12 @@ namespace Nop.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsShipEnabled")]
         public bool IsShipEnabled { get; set; }
 
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsUseVendorAddress")]
+        public bool IsUseVendorAddress { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.DisplayAddress")]
+        public string DisplayAddress { get; set; }
+
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsFreeShipping")]
         public bool IsFreeShipping { get; set; }
 

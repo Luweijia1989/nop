@@ -34,6 +34,7 @@
         $("#@Html.FieldIdFor(model => model.IsRecurring)").click(toggleRecurring);
         $("#@Html.FieldIdFor(model => model.IsRental)").click(toggleRental);
         $("#@Html.FieldIdFor(model => model.IsShipEnabled)").click(toggleShipping);
+        $("#@Html.FieldIdFor(model => model.IsUseVendorAddress)").click(toggleDisplayAddress);
         $("#@Html.FieldIdFor(model => model.IsTaxExempt)").click(toggleTax);
         $("#@Html.FieldIdFor(model => model.ManageInventoryMethodId)").change(toggleManageStock);
         $("#@Html.FieldIdFor(model => model.UseMultipleWarehouses)").click(toggleManageStock);
@@ -55,6 +56,7 @@
         toggleRecurring();
         toggleRental();
         toggleShipping();
+        toggleDisplayAddress();
         toggleTax();
         toggleManageStock();
         toggleMarkAsNew();
@@ -83,6 +85,7 @@
             $('#group-recurring').show();
             $('#group-rental').show();
             $('#group-shipping').show();
+            $('#group-displayaddress').show();
             $('#group-inventory').show();
             $('#group-associated-products').hide();
         } else if (selectedProductTypeId == groupedProductId) {
@@ -94,6 +97,7 @@
             $('#group-recurring').hide();
             $('#group-rental').hide();
             $('#group-shipping').hide();
+            $('#group-displayaddress').hide();
             $('#group-inventory').hide();
             $('#group-associated-products').show();
         }
@@ -238,6 +242,14 @@
             $('#pnlWidth').hide();
             $('#pnlHeight').hide();
             $('#pnlDeliveryDate').hide();
+        }
+    }
+
+    function toggleDisplayAddress() {
+        if (!$('#@Html.FieldIdFor(model => model.IsUseVendorAddress)').is(':checked')) {
+            $('#displayAddressEditor').show();
+        } else {
+            $('#displayAddressEditor').hide();
         }
     }
 
@@ -1852,6 +1864,31 @@
                         <div class="@rightColumnClass">
                             @Html.NopDropDownListFor(model => model.VendorId, Model.AvailableVendors)
                             @Html.ValidationMessageFor(model => model.VendorId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" id="group-displayaddress">
+                <div class="panel-heading">
+                    @T("Admin.Catalog.Products.DisplayAddress")
+                </div>
+                <div class="panel-body">
+                    <div class="form-group" @(Model.IsLoggedInAsVendor ? null : Html.Raw("style='display: none;'"))>
+                        <div class="@leftColumnClass">
+                            @Html.NopLabelFor(model => model.IsUseVendorAddress)
+                        </div>
+                        <div class="@rightColumnClass">
+                            @Html.NopEditorFor(model => model.IsUseVendorAddress)
+                            @Html.ValidationMessageFor(model => model.IsUseVendorAddress)
+                        </div>
+                    </div>
+                    <div class="form-group"  id="displayAddressEditor">
+                        <div class="@leftColumnClass">
+                            @Html.NopLabelFor(model => model.DisplayAddress)
+                        </div>
+                        <div class="@rightColumnClass">
+                            @Html.NopEditorFor(model => model.DisplayAddress)
+                            @Html.ValidationMessageFor(model => model.DisplayAddress)
                         </div>
                     </div>
                 </div>
