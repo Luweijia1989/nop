@@ -1247,6 +1247,17 @@ namespace Nop.Web.Factories
                 }
             }
 
+            if (product.IsUseVendorAddress)
+            {
+                Vendor vendor = _vendorService.GetVendorById(product.VendorId);
+                if (vendor != null)
+                    model.DisplayAddress = vendor.DisplayAddress;
+                else
+                    model.DisplayAddress = "";
+            }
+            else
+                model.DisplayAddress = product.DisplayAddress;
+
             //email a friend
             model.EmailAFriendEnabled = _catalogSettings.EmailAFriendEnabled;
             //compare products
