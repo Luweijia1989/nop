@@ -30,6 +30,7 @@ namespace Nop.Web.Models.Catalog
             this.AvailableViewModes = new List<SelectListItem>();
             this.PageSizeOptions = new List<SelectListItem>();
             this.PriceRangeFilter = new PriceRangeFilterModel();
+            this.AreaFilter = new AreaFilterModel();
             this.SpecificationFilter = new SpecificationFilterModel();
         }
 
@@ -41,6 +42,8 @@ namespace Nop.Web.Models.Catalog
         /// Price range filter model
         /// </summary>
         public PriceRangeFilterModel PriceRangeFilter { get; set; }
+
+        public AreaFilterModel AreaFilter { get; set; }
         /// <summary>
         /// Specification filter model
         /// </summary>
@@ -86,6 +89,144 @@ namespace Nop.Web.Models.Catalog
         #endregion
 
         #region Nested classes
+
+        public partial class AreaFilterModel : BaseNopModel
+        {
+            #region Const
+
+            private const string QUERYSTRINGPARAM = "area";
+
+            #endregion 
+
+            #region Ctor
+
+            /// <summary>
+            /// Constuctor
+            /// </summary>
+            public AreaFilterModel()
+            {
+                this.Items = new List<AreaFilterItem>();
+            }
+
+            #endregion
+
+            #region Utilities
+
+            /// <summary>
+            /// Gets all area
+            /// </summary>
+            /// <returns>areas</returns>
+            protected virtual IList<string> GetAreaList()
+            {
+                var areas = new List<string>();
+                string[] ss = new string[] { "北京市", "天津市","上海市","重庆市","河北省","山西省","辽宁省","吉林省","黑龙江省","江苏省","浙江省","安徽省","福建省",
+                "江西省","山东省","河南省","湖北省","湖南省","广东省","海南省","四川省","贵州省","云南省","陕西省","甘肃省","青海省","台湾省","内蒙古自治区",
+                "广西壮族自治区","西藏自治区","宁夏回族自治区","新疆维吾尔自治区","香港特别行政区","澳门特别行政区"};
+                foreach (string s in ss)
+                {
+                    areas.Add(s);
+                }
+                return areas;
+            }
+
+            /// <summary>
+            /// Exclude query string parameters
+            /// </summary>
+            /// <param name="url">URL</param>
+            /// <param name="webHelper">Web helper</param>
+            /// <returns>New URL</returns>
+            protected virtual string ExcludeQueryStringParams(string url, IWebHelper webHelper)
+            {
+                //comma separated list of parameters to exclude
+                const string excludedQueryStringParams = "pagenumber";
+                var excludedQueryStringParamsSplitted = excludedQueryStringParams.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string exclude in excludedQueryStringParamsSplitted)
+                    url = webHelper.RemoveQueryString(url, exclude);
+                return url;
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// Get selected area
+            /// </summary>
+            /// <param name="webHelper">Web helper</param>
+            /// <returns>Price ranges</returns>
+            public virtual string GetSelectedArea(IWebHelper webHelper)
+            {
+                var area = webHelper.QueryString<string>(QUERYSTRINGPARAM);
+                if (String.IsNullOrEmpty(area))
+                    return null;
+                
+                return area;
+            }
+
+            /// <summary>
+            /// Load price range filters
+            /// </summary>
+            /// <param name="webHelper">Web helper</param>
+            public virtual void LoadAreaFilters(IWebHelper webHelper)
+            {
+                var areaList = GetAreaList();
+                if (areaList.Any())
+                {
+                    this.Enabled = true;
+
+                    var selectedArea = GetSelectedArea(webHelper);
+
+                    this.Items = areaList.ToList().Select(x =>
+                    {
+                        var item = new AreaFilterItem();
+                        item.Area = x;
+                        //is selected?
+                        if (selectedArea != null && 
+                            selectedArea == x)
+                            item.Selected = true;
+
+                        //filter URL
+                        string url = webHelper.ModifyQueryString(webHelper.GetThisPageUrl(true), QUERYSTRINGPARAM + "=" + x, null);
+                        url = ExcludeQueryStringParams(url, webHelper);
+                        item.FilterUrl = url;
+
+
+                        return item;
+                    }).ToList();
+
+                    if (selectedArea != null)
+                    {
+                        //remove filter URL
+                        string url = webHelper.RemoveQueryString(webHelper.GetThisPageUrl(true), QUERYSTRINGPARAM);
+                        url = ExcludeQueryStringParams(url, webHelper);
+                        this.RemoveFilterUrl = url;
+                    }
+                }
+                else
+                {
+                    this.Enabled = false;
+                }
+            }
+
+            #endregion
+
+            #region Properties
+
+            /// <summary>
+            /// Gets or sets a value indicating whether filtering is enabled
+            /// </summary>
+            public bool Enabled { get; set; }
+            /// <summary>
+            /// Filter items
+            /// </summary>
+            public IList<AreaFilterItem> Items { get; set; }
+            /// <summary>
+            /// URL of "remove filters" button
+            /// </summary>
+            public string RemoveFilterUrl { get; set; }
+
+            #endregion
+        }
 
         /// <summary>
         /// Price range filter model
@@ -268,6 +409,25 @@ namespace Nop.Web.Models.Catalog
             public string RemoveFilterUrl { get; set; }
 
             #endregion
+        }
+
+        /// <summary>
+        /// Area filter item
+        /// </summary>
+        public partial class AreaFilterItem : BaseNopModel
+        {
+            /// <summary>
+            /// area
+            /// </summary>
+            public string Area { get; set; }
+            /// <summary>
+            /// Filter URL
+            /// </summary>
+            public string FilterUrl { get; set; }
+            /// <summary>
+            /// Is selected?
+            /// </summary>
+            public bool Selected { get; set; }
         }
 
         /// <summary>

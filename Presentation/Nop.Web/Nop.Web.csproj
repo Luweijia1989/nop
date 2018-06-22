@@ -1037,6 +1037,7 @@
     <Content Include="Views\Customer\EmailRevalidation.cshtml" />
     <Content Include="Views\Product\_ProductVideos.cshtml" />
     <Content Include="Views\Product\_ProductMap.cshtml" />
+    <Content Include="Views\Catalog\_FilterAreaBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

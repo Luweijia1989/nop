@@ -118,6 +118,9 @@
         }
         @Html.Widget("categorydetails_before_filters", Model.Id)
         <div class="product-filters">
+            @*filtering area*@
+            @Html.Partial("_FilterAreaBox", Model.PagingFilteringContext.AreaFilter, new ViewDataDictionary())
+
             @*filtering*@
             @if (Model.PagingFilteringContext.PriceRangeFilter.Enabled)
             {

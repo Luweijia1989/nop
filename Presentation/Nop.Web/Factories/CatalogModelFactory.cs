@@ -386,6 +386,8 @@ namespace Nop.Web.Factories
                     maxPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(selectedPriceRange.To.Value, _workContext.WorkingCurrency);
             }
 
+            model.PagingFilteringContext.AreaFilter.LoadAreaFilters(_webHelper);
+            var selectedArea = model.PagingFilteringContext.AreaFilter.GetSelectedArea(_webHelper);
 
             //category breadcrumb
             if (_catalogSettings.CategoryBreadcrumbEnabled)
@@ -812,7 +814,7 @@ namespace Nop.Web.Factories
                     maxPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(selectedPriceRange.To.Value, _workContext.WorkingCurrency);
             }
 
-
+            model.PagingFilteringContext.AreaFilter.LoadAreaFilters(_webHelper);
 
             //featured products
             if (!_catalogSettings.IgnoreFeaturedProducts)
