@@ -53,6 +53,8 @@ namespace Nop.Admin.Models.Catalog
 
             SelectedDiscountIds = new List<int>();
             AvailableDiscounts = new List<SelectListItem>();
+
+            AvailableAreas = new List<SelectListItem>();
         }
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.ID")]
@@ -218,6 +220,9 @@ namespace Nop.Admin.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.DisplayAddress")]
         public string DisplayAddress { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
+        public string Area { get; set; }
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsFreeShipping")]
         public bool IsFreeShipping { get; set; }
@@ -459,6 +464,8 @@ namespace Nop.Admin.Models.Catalog
 
         //stock quantity history
         public StockQuantityHistoryModel StockQuantityHistory { get; set; }
+
+        public IList<SelectListItem> AvailableAreas { get; set; }
 
         #region Nested classes
 

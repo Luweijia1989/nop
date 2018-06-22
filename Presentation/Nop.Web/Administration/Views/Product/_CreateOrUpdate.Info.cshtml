@@ -1893,6 +1893,23 @@
                     </div>
                 </div>
             </div>
+
+            <div class="panel panel-default" id="group-area">
+                <div class="panel-heading">
+                    @T("Admin.Catalog.Products.Area")
+                </div>
+                <div class="panel-body">
+                    <div class="form-group" id="areaEditor">
+                        <div class="@leftColumnClass">
+                            @Html.NopLabelFor(model => model.Area)
+                        </div>
+                        <div class="@rightColumnClass">
+                            @Html.DropDownListFor(model => model.Area, Model.AvailableAreas)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="panel panel-default @(Model.ProductEditorSettingsModel.ACL ? null : "advanced-setting")">
                 <div class="panel-heading">
                     @T("Admin.Catalog.Products.Security")
