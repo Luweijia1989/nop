@@ -176,24 +176,24 @@ namespace Nop.Web.Models.Catalog
 
                     var selectedArea = GetSelectedArea(webHelper);
 
-                    this.Items = areaList.ToList().Select(x =>
+                    for (int i=0; i<areaList.Count; i++)
                     {
+                        string str = areaList.ElementAt(i);
                         var item = new AreaFilterItem();
-                        item.Area = x;
+                        item.Area = str;
+
                         //is selected?
-                        if (selectedArea != null && 
-                            selectedArea == x)
+                        if (selectedArea != null &&
+                            selectedArea == i.ToString())
                             item.Selected = true;
 
                         //filter URL
-                        string url = webHelper.ModifyQueryString(webHelper.GetThisPageUrl(true), QUERYSTRINGPARAM + "=" + x, null);
+                        string url = webHelper.ModifyQueryString(webHelper.GetThisPageUrl(true), QUERYSTRINGPARAM + "=" + i, null);
                         url = ExcludeQueryStringParams(url, webHelper);
                         item.FilterUrl = url;
-
-
-                        return item;
-                    }).ToList();
-
+                        this.Items.Add(item);
+                    }
+                    
                     if (selectedArea != null)
                     {
                         //remove filter URL
