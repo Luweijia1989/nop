@@ -509,6 +509,7 @@ namespace Nop.Web.Factories
             var products = _productService.SearchProducts(out filterableSpecificationAttributeOptionIds,
                 true,
                 categoryIds: categoryIds,
+                area: selectedArea,
                 storeId: _storeContext.CurrentStore.Id,
                 visibleIndividuallyOnly: true,
                 featuredProducts:_catalogSettings.IncludeFeaturedProductsInNormalLists ? null : (bool?)false,

@@ -106,6 +106,7 @@ CREATE PROCEDURE [dbo].[ProductLoadAllPaged]
 	@PageSize			int = 2147483644,
 	@ShowHidden			bit = 0,
 	@OverridePublished	bit = null, --null - process "Published" property according to "showHidden" parameter, true - load only "Published" products, false - load only "Unpublished" products
+	@Area				nvarchar(MAX) = null,
 	@LoadFilterableSpecificationAttributeOptionIds bit = 0, --a value indicating whether we should load the specification attribute option identifiers applied to loaded products (all pages)
 	@FilterableSpecificationAttributeOptionIds nvarchar(MAX) = null OUTPUT, --the specification attribute option identifiers applied to loaded products (all pages). returned as a comma separated list of identifiers
 	@TotalRecords		int = null OUTPUT
@@ -536,6 +537,12 @@ BEGIN
 	BEGIN
 		SET @sql = @sql + '
 		AND (p.Price <= ' + CAST(@PriceMax AS nvarchar(max)) + ')'
+	END
+
+	--Area Filter
+	IF @Area is not null
+	BEGIN
+		SET @sql = @sql + ' AND (p.Area = ''' + @Area + ''') '
 	END
 	
 	--show hidden and ACL

@@ -410,6 +410,7 @@ namespace Nop.Services.Catalog
             int pageIndex = 0,
             int pageSize = int.MaxValue,
             IList<int> categoryIds = null,
+            string area = null,
             int manufacturerId = 0,
             int storeId = 0,
             int vendorId = 0,
@@ -434,7 +435,7 @@ namespace Nop.Services.Catalog
         {
             IList<int> filterableSpecificationAttributeOptionIds;
             return SearchProducts(out filterableSpecificationAttributeOptionIds, false,
-                pageIndex, pageSize, categoryIds, manufacturerId,
+                pageIndex, pageSize, categoryIds, area, manufacturerId,
                 storeId, vendorId, warehouseId,
                 productType, visibleIndividuallyOnly, markedAsNewOnly, featuredProducts,
                 priceMin, priceMax, productTagId, keywords, searchDescriptions, searchManufacturerPartNumber, searchSku,
@@ -482,6 +483,7 @@ namespace Nop.Services.Catalog
             int pageIndex = 0,
             int pageSize = int.MaxValue,
             IList<int> categoryIds = null,
+            string area = null,
             int manufacturerId = 0,
             int storeId = 0,
             int vendorId = 0,
@@ -692,6 +694,11 @@ namespace Nop.Services.Catalog
                 pOverridePublished.Value = overridePublished != null ? (object)overridePublished.Value : DBNull.Value;
                 pOverridePublished.DbType = DbType.Boolean;
 
+                var pArea = _dataProvider.GetParameter();
+                pArea.ParameterName = "Area";
+                pArea.Value = area != null ? area : "";
+                pArea.DbType = DbType.String;
+
                 var pLoadFilterableSpecificationAttributeOptionIds = _dataProvider.GetParameter();
                 pLoadFilterableSpecificationAttributeOptionIds.ParameterName = "LoadFilterableSpecificationAttributeOptionIds";
                 pLoadFilterableSpecificationAttributeOptionIds.Value = loadFilterableSpecificationAttributeOptionIds;
@@ -738,6 +745,7 @@ namespace Nop.Services.Catalog
                     pPageSize,
                     pShowHidden,
                     pOverridePublished,
+                    pArea,
                     pLoadFilterableSpecificationAttributeOptionIds,
                     pFilterableSpecificationAttributeOptionIds,
                     pTotalRecords);
