@@ -19,7 +19,7 @@
             @if (selectedItem == null)
             {
                 <div class="available-items">
-                    <ul class="group price-range-group">
+                    <ul class="group price-range-group area-filter">
                         @foreach (var item in Model.Items)
                         {
                             <li><a href="@item.FilterUrl">@FormatAreaText(item)</a></li>

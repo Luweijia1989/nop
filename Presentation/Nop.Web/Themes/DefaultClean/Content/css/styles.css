@@ -1339,6 +1339,10 @@ label, label + * {
 .product-filter .group {
 	margin: 0 0 10px;
 }
+.area-filter li{
+	float: left;
+	margin: 0px 10px;
+}
 .product-filter .group li {
 	font-size: 15px;
 }
