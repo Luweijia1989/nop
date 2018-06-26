@@ -540,7 +540,7 @@ BEGIN
 	END
 
 	--Area Filter
-	IF @Area is not null
+	IF isnull(@Area,'')<>''
 	BEGIN
 		SET @sql = @sql + ' AND (p.Area = ''' + @Area + ''') '
 	END
