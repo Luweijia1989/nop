@@ -87,6 +87,19 @@ namespace Nop.Services.Orders
             bool showHidden = false);
 
         /// <summary>
+        /// Get best view report
+        /// </summary>
+        /// <param name="vendorId">Vendor identifier; 0 to load all records</param>       
+        /// <param name="pageIndex">Page index</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>Result</returns>
+        IPagedList<Product> BestViewProductReport(
+            int vendorId = 0,
+            int pageIndex = 0, int pageSize = int.MaxValue,
+            bool showHidden = false);
+
+        /// <summary>
         /// Gets a list of products (identifiers) purchased by other customers who purchased a specified product
         /// </summary>
         /// <param name="storeId">Store identifier</param>

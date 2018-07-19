@@ -369,6 +369,19 @@ namespace Nop.Services.Orders
             return result;
         }
 
+        IPagedList<Product> IOrderReportService.BestViewProductReport(int vendorId, int pageIndex, int pageSize, bool showHidden)
+        {
+            var query1 = from productItem in _productRepository.Table
+                         where (vendorId == 0 || productItem.VendorId == vendorId) &&
+                         (showHidden || productItem.Published)
+                         select productItem;
+
+            query1 = query1.OrderByDescending(x => x.ViewCount);
+
+            var result = new PagedList<Product>(query1, pageIndex, pageSize);
+            return result;
+        }
+
         /// <summary>
         /// Gets a list of products (identifiers) purchased by other customers who purchased a specified product
         /// </summary>

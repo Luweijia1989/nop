@@ -30,6 +30,7 @@ namespace Nop.Data.Mapping.Catalog
             this.Property(p => p.BasepriceBaseAmount).HasPrecision(18, 4);
             this.Property(p => p.DisplayAddress).HasMaxLength(400);
             this.Property(p => p.Area).HasMaxLength(400);
+            this.Property(p => p.ViewCount);
 
             this.Ignore(p => p.ProductType);
             this.Ignore(p => p.BackorderMode);

@@ -221,6 +221,9 @@ namespace Nop.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.DisplayAddress")]
         public string DisplayAddress { get; set; }
 
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ViewCount")]
+        public int ViewCount { get; set; }
+
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
         public string Area { get; set; }
 

@@ -38,7 +38,9 @@ namespace Nop.Services.Catalog
         /// <param name="productId">Product identifier</param>
         /// <returns>Product</returns>
         Product GetProductById(int productId);
-        
+
+        void IncreaseViewCount(int productId);
+
         /// <summary>
         /// Gets products by identifier
         /// </summary>

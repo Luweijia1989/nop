@@ -32,6 +32,9 @@ using Nop.Services.Stores;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Kendoui;
 using Nop.Web.Framework.Security;
+using Nop.Core.Domain.Orders;
+using Nop.Admin.Models.Orders;
+using Nop.Services.Catalog;
 
 namespace Nop.Admin.Controllers
 {
@@ -61,6 +64,7 @@ namespace Nop.Admin.Controllers
         private readonly CatalogSettings _catalogSettings;
         private readonly HttpContextBase _httpContext;
         private readonly IMaintenanceService _maintenanceService;
+        private readonly IOrderReportService _orderReportService;
 
         #endregion
 
@@ -87,7 +91,8 @@ namespace Nop.Admin.Controllers
             IStoreService storeService,
             CatalogSettings catalogSettings,
             HttpContextBase httpContext,
-            IMaintenanceService maintenanceService)
+            IMaintenanceService maintenanceService,
+            IOrderReportService orderReportService)
         {
             this._paymentService = paymentService;
             this._shippingService = shippingService;
@@ -111,6 +116,7 @@ namespace Nop.Admin.Controllers
             this._catalogSettings = catalogSettings;
             this._httpContext = httpContext;
             this._maintenanceService = maintenanceService;
+            this._orderReportService = orderReportService;
         }
 
         #endregion
@@ -826,6 +832,57 @@ namespace Nop.Admin.Controllers
                 }),
                 Total = searchTermRecordLines.TotalCount
             };
+            return Json(gridModel);
+        }
+
+        [NonAction]
+        protected virtual DataSourceResult GetBestViewProductModel(int pageIndex,
+            int pageSize)
+        {
+            //a vendor should have access only to his products
+            int vendorId = 0;
+            if (_workContext.CurrentVendor != null)
+                vendorId = _workContext.CurrentVendor.Id;
+
+            var items = _orderReportService.BestViewProductReport(
+                vendorId: vendorId,
+                pageIndex: pageIndex,
+                pageSize: pageSize,
+                showHidden: true);
+            var gridModel = new DataSourceResult
+            {
+                Data = items.Select(x =>
+                {
+                    var m = new BestViewProductReportLineModel
+                    {
+                        ProductId = x.Id,
+                        ProductName = x.Name,
+                        TotalViewCount = x.ViewCount,
+                    };
+                    return m;
+                }),
+                Total = items.TotalCount
+            };
+            return gridModel;
+        }
+
+        public virtual ActionResult BestViewProduct()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+                return Content("");
+
+            return PartialView();
+        }
+
+        [HttpPost]
+        public virtual ActionResult BestViewProduct(DataSourceRequest command)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+                return AccessDeniedKendoGridJson();
+
+            var gridModel = GetBestViewProductModel(command.Page - 1,
+                command.PageSize);
+
             return Json(gridModel);
         }
 

@@ -180,7 +180,7 @@ namespace Nop.Web.Controllers
             var model = _productModelFactory.PrepareProductDetailsModel(product, updatecartitem, false);
             //template
             var productTemplateViewPath = _productModelFactory.PrepareProductTemplateViewPath(product);
-
+            _productService.IncreaseViewCount(productId);
             return View(productTemplateViewPath, model);
         }
 

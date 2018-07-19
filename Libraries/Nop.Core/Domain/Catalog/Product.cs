@@ -485,6 +485,11 @@ namespace Nop.Core.Domain.Catalog
         public string DisplayAddress { get; set; }
 
         /// <summary>
+        /// Gets or sets the view count of product
+        /// </summary>
+        public int ViewCount { get; set; }
+
+        /// <summary>
         /// Gets or sets the area of product
         /// </summary>
         public string Area { get; set; }

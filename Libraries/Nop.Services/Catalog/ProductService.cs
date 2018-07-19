@@ -242,6 +242,15 @@ namespace Nop.Services.Catalog
             return _cacheManager.Get(key, () => _productRepository.GetById(productId));
         }
 
+        public virtual void IncreaseViewCount(int productId)
+        {
+            Product product = GetProductById(productId);
+            if (product != null)
+                product.ViewCount++;
+
+            UpdateProduct(product);
+        }
+
         /// <summary>
         /// Get products by identifiers
         /// </summary>

@@ -102,6 +102,15 @@
                         @Html.Action("BestsellersBriefReportByAmount", "Order")
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (canManageProducts)
+                        {
+                            @Html.Action("BestViewProduct", "Common")
+                        }
+                    </div>
+                </div>
             }
             @Html.Widget("admin_dashboard_bottom")
         </div>
