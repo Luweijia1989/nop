@@ -1268,6 +1268,7 @@ namespace Nop.Admin.Controllers
                 var prevSampleDownloadId = product.SampleDownloadId;
                 var previousStockQuantity = product.StockQuantity;
                 var previousWarehouseId = product.WarehouseId;
+                model.ViewCount = product.ViewCount;
 
                 //product
                 product = model.ToEntity(product);

@@ -289,6 +289,32 @@ namespace Nop.Web.Framework.UI.Paging
                     url = webHelper.ModifyQueryString(url, key + "=", null);
                 }
             }
+
+            if (url == null)
+            {
+                try
+                {
+                    string g_se_name = viewContext.RequestContext.RouteData.Values["generic_se_name"].ToString();
+                    string se_name = viewContext.RequestContext.RouteData.Values["SeName"].ToString();
+
+                    if (g_se_name == null && se_name == null)
+                        return null;
+
+                    url += "/";
+                    url += g_se_name == null ? se_name : g_se_name + "?";
+
+                    foreach (KeyValuePair<string, object> one in routeValues)
+                    {
+                        url += one.Key.ToString() + "=" + one.Value.ToString() + "&";
+                    }
+                    url = url.TrimEnd('&');
+                    return url;
+                } catch (Exception e)
+                {
+                    return null;
+                }
+            }
+
 			return url;
 		}
 	}
