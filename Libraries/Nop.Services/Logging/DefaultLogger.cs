@@ -84,6 +84,7 @@ namespace Nop.Services.Logging
             switch(level)
             {
                 case LogLevel.Debug:
+                case LogLevel.Warning:
                     return false;
                 default:
                     return true;
