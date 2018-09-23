@@ -90,10 +90,7 @@
                 sizeLimit: 100000000 // 100M
             },
             template: "@(clientId)-qq-template",
-            multiple: false,
-            text: {
-                sizeError: "{file} 太大了，最大允许的大小是 {sizeLimit}."
-            }
+            multiple: false
         }).on("complete", function(event, id, name, responseJSON, xhr) {
             if (responseJSON.success) {
                 $("#@(clientId + "image")").html("<img src='" + responseJSON.thumbUrl + "'style='width:100%; height:100%'/>");
