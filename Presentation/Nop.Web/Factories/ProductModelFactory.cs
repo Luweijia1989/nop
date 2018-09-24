@@ -690,7 +690,7 @@ namespace Nop.Web.Factories
             if (!_permissionService.Authorize(StandardPermissionProvider.DisplayPrices))
             {
                 model.DisableBuyButton = true;
-                model.DisableWishlistButton = true;
+                //model.DisableWishlistButton = true;
             }
             //pre-order
             if (product.AvailableForPreOrder)
