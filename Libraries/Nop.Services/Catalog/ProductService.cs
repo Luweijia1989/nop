@@ -2022,6 +2022,17 @@ namespace Nop.Services.Catalog
                 .GroupBy(p => p.ProductId).ToDictionary(p => p.Key, p => p.Select(p1 => p1.PictureId).ToArray());
         }
 
+        /// <summary>
+        /// Get the IDs of all product videos 
+        /// </summary>
+        /// <param name="productsIds">Products IDs</param>
+        /// <returns>All video identifiers grouped by product ID</returns>
+        public IDictionary<int, int[]> GetProductsVideosIds(int[] productsIds)
+        {
+            return _productVideoRepository.Table.Where(p => productsIds.Contains(p.ProductId))
+                .GroupBy(p => p.ProductId).ToDictionary(p => p.Key, p => p.Select(p1 => p1.VideoId).ToArray());
+        }
+
         #endregion
 
         #region Product reviews

@@ -508,6 +508,13 @@ namespace Nop.Services.Catalog
         /// <returns>All picture identifiers grouped by product ID</returns>
         IDictionary<int, int[]> GetProductsImagesIds(int [] productsIds);
 
+        /// <summary>
+        /// Get the IDs of all product videos 
+        /// </summary>
+        /// <param name="productsIds">Products IDs</param>
+        /// <returns>All video identifiers grouped by product ID</returns>
+        IDictionary<int, int[]> GetProductsVideosIds(int[] productsIds);
+
         #endregion
 
         #region Product reviews

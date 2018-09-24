@@ -2173,6 +2173,17 @@ namespace Nop.Admin.Controllers
             if (_workContext.CurrentVendor != null && product.VendorId != _workContext.CurrentVendor.Id)
                 return RedirectToAction("List");
 
+            int[] param = new int[1];
+            param[0] = productId;
+            var result = _productService.GetProductsVideosIds(param);
+            if (result.Count > 0)
+            {
+                if (result[productId].Length >= 3) // 视频限制3个
+                {
+                    return Json(new { Result = 0 }, JsonRequestBehavior.AllowGet); //error
+                }
+            }
+
             var video = _videoService.GetVideoById(videoId);
             if (video == null)
                 throw new ArgumentException("No video found with the specified id");
@@ -2317,10 +2328,10 @@ namespace Nop.Admin.Controllers
             var result = _productService.GetProductsImagesIds(param);
             if (result.Count > 0)
             {
-                //if (result[productId].Length>1)
-                //{
-                //    throw new ArgumentException("too many pictures");
-                //}
+                if (result[productId].Length >=15) // 图片限制15张
+                {
+                    return Json(new { Result = 0 }, JsonRequestBehavior.AllowGet); //error
+                }
             }
             var picture = _pictureService.GetPictureById(pictureId);
             if (picture == null)
@@ -2342,7 +2353,7 @@ namespace Nop.Admin.Controllers
                 DisplayOrder = displayOrder,
             });
 
-            return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
+            return Json(new { Result = 1 }, JsonRequestBehavior.AllowGet); //success
         }
 
         [HttpPost]

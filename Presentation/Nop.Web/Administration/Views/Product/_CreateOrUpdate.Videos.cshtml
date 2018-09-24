@@ -136,8 +136,12 @@
                                 url: "@(Url.Action("ProductVideoAdd", "Product"))",
                                 data: postData,
                                 success: function(data) {
-                                    var grid = $("#productvideos-grid");
-                                    grid.data('kendoGrid').dataSource.read();
+                                    if (data.Result == 0) {
+                                        alert('视频最多只能上传3个，请删除后再添加！')
+                                    } else {
+                                        var grid = $("#productvideos-grid");
+                                        grid.data('kendoGrid').dataSource.read();
+                                    }
                                     $('#addProductVideo').attr('disabled', false);
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
