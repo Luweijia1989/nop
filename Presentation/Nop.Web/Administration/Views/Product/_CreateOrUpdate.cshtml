@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-md-12 clearfix">
                 <div class="pull-left">
-                    @Html.Action("Mode", "Setting", new {modeName = "product-advanced-mode"})
+                    @Html.Action("Mode", "Setting", new { modeName = "product-advanced-mode" })
                 </div>
                 @if (!Model.IsLoggedInAsVendor)
                 {
@@ -31,9 +31,11 @@
                 @Html.RenderBootstrapTabHeader("tab-seo", @T("Admin.Common.SEO"), customCssClass:  Model.ProductEditorSettingsModel.Seo ? "" : "advanced-setting")
                 @Html.RenderBootstrapTabHeader("tab-pictures", @T("Admin.Catalog.Products.Pictures"))
                 @Html.RenderBootstrapTabHeader("tab-videos", @T("Admin.Catalog.Products.Videos"))
-                @Html.RenderBootstrapTabHeader("tab-product-attributes", @T("Admin.Catalog.Products.ProductAttributes"), customCssClass: Model.ProductEditorSettingsModel.ProductAttributes ? "" : "advanced-setting")
-                @Html.RenderBootstrapTabHeader("tab-specification-attributes", @T("Admin.Catalog.Products.SpecificationAttributes"), customCssClass: Model.ProductEditorSettingsModel.SpecificationAttributes ? "" : "advanced-setting")
-                @if (Model.Id > 0)
+                @if (!Model.IsLoggedInAsVendor) {
+                    @Html.RenderBootstrapTabHeader("tab-product-attributes", @T("Admin.Catalog.Products.ProductAttributes"), customCssClass: Model.ProductEditorSettingsModel.ProductAttributes ? "" : "advanced-setting")
+                    @Html.RenderBootstrapTabHeader("tab-specification-attributes", @T("Admin.Catalog.Products.SpecificationAttributes"), customCssClass: Model.ProductEditorSettingsModel.SpecificationAttributes ? "" : "advanced-setting")
+                }
+                @if (Model.Id > 0 && !Model.IsLoggedInAsVendor)
                 {
                     @Html.RenderBootstrapTabHeader("tab-purchased-with-orders", @T("Admin.Catalog.Products.PurchasedWithOrders"), customCssClass: Model.ProductEditorSettingsModel.PurchasedWithOrders ? "" : "advanced-setting")
                     @Html.RenderBootstrapTabHeader("tab-stock-quantity-history", @T("Admin.Catalog.Products.StockQuantityHistory"), customCssClass: Model.ProductEditorSettingsModel.StockQuantityHistory ? "" : "advanced-setting")
@@ -44,9 +46,12 @@
                 @Html.RenderBootstrapTabContent("tab-seo", @TabSeo())
                 @Html.RenderBootstrapTabContent("tab-pictures", @TabPictures())
                 @Html.RenderBootstrapTabContent("tab-videos", TabVideos())
-                @Html.RenderBootstrapTabContent("tab-specification-attributes", @TabSpecificationAttributes())
-                @Html.RenderBootstrapTabContent("tab-product-attributes", @TabProductAttributes())
-                @if (Model.Id > 0)
+                @if (!Model.IsLoggedInAsVendor)
+                {
+                    @Html.RenderBootstrapTabContent("tab-specification-attributes", @TabSpecificationAttributes())
+                    @Html.RenderBootstrapTabContent("tab-product-attributes", @TabProductAttributes())
+                }
+                @if (Model.Id > 0 && !Model.IsLoggedInAsVendor)
                 {
                     @Html.RenderBootstrapTabContent("tab-purchased-with-orders", @TabPurchasedWithOrders())
                     @Html.RenderBootstrapTabContent("tab-stock-quantity-history", @TabStockQuantityHistory())

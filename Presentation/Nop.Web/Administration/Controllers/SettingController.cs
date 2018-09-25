@@ -169,7 +169,8 @@ namespace Nop.Admin.Controllers
             var model = new ModeModel()
             {
                 ModeName = modeName,
-                Enabled = _workContext.CurrentCustomer.GetAttribute<bool>(modeName)
+                Enabled = _workContext.CurrentVendor != null ? false : _workContext.CurrentCustomer.GetAttribute<bool>(modeName),
+                IsVendor = _workContext.CurrentVendor != null
             };
             return PartialView(model);
         }

@@ -77,16 +77,16 @@
 
         var selectedProductTypeId = $("#@Html.FieldIdFor(model => model.ProductTypeId)").val();
         if (!selectedProductTypeId || selectedProductTypeId == simpleProductId) {
-            $('#group-prices').show();
+            $('#group-prices').hide();
+            $('#group-shipping').hide();
+            $('#group-inventory').hide();
             $('#tier-prices').show();
             $('#group-required-other-products').show();
             $('#group-giftcard').show();
             $('#group-downloads').show();
             $('#group-recurring').show();
             $('#group-rental').show();
-            $('#group-shipping').show();
             $('#group-displayaddress').show();
-            $('#group-inventory').show();
             $('#group-associated-products').hide();
         } else if (selectedProductTypeId == groupedProductId) {
             $('#group-prices').hide();
@@ -588,15 +588,18 @@
                         </div>
                     </div>
                             ))
-                    <div class="form-group">
-                        <div class="col-md-3">
-                            @Html.NopLabelFor(model => model.Sku)
+
+                    @if (!Model.IsLoggedInAsVendor) {
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.Sku)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.Sku)
+                                @Html.ValidationMessageFor(model => model.Sku)
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            @Html.NopEditorFor(model => model.Sku)
-                            @Html.ValidationMessageFor(model => model.Sku)
-                        </div>
-                    </div>
+                    }
                     <div class="form-group @(Model.ProductEditorSettingsModel.Published ? null : "advanced-setting")">
                         <div class="col-md-3">
                             @Html.NopLabelFor(model => model.Published)

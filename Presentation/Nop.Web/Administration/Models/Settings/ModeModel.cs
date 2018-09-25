@@ -6,5 +6,6 @@ namespace Nop.Admin.Models.Settings
     {
         public string ModeName { get; set; }
         public bool Enabled { get; set; }
+        public bool IsVendor { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 <div class="form-group">
     <div class="col-md-12">
         <div class="onoffswitch">
-            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="advanced-settings-mode" checked="@Model.Enabled">
+            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="advanced-settings-mode" checked="@Model.Enabled" disabled=@Model.IsVendor>
             <label class="onoffswitch-label" for="advanced-settings-mode">
                 <span class="onoffswitch-inner" 
                       data-locale-basic="@T("Admin.Configuration.Settings.Mode.Basic")" 
