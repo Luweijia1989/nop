@@ -147,7 +147,8 @@ namespace Nop.Web.Controllers
                     PageSizeOptions = _vendorSettings.DefaultVendorPageSizeOptions,
                     PictureId = pictureId,
                     Description = description,
-                    DisplayAddress = model.DisplayAddress
+                    DisplayAddress = model.DisplayAddress,
+                    Active = true
                 };
                 _vendorService.InsertVendor(vendor);
                 //search engine name (the same as vendor name)
@@ -158,6 +159,15 @@ namespace Nop.Web.Controllers
                 //but a store owner will have to manually add this customer role to "Vendors" role
                 //if he wants to grant access to admin area
                 _workContext.CurrentCustomer.VendorId = vendor.Id;
+                var allCustomerRoles = _customerService.GetAllCustomerRoles(true);
+                foreach (var customerRole in allCustomerRoles)
+                {
+                    if (customerRole.Name == "Vendors")
+                    {
+                        _workContext.CurrentCustomer.CustomerRoles.Add(customerRole);
+                        break;
+                    }
+                }
                 _customerService.UpdateCustomer(_workContext.CurrentCustomer);
 
                 //update picture seo file name
