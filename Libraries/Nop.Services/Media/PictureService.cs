@@ -14,6 +14,7 @@ using Nop.Services.Configuration;
 using Nop.Services.Events;
 using Nop.Services.Logging;
 using Nop.Services.Seo;
+using System.Drawing.Imaging;
 
 namespace Nop.Services.Media
 {
@@ -923,6 +924,48 @@ namespace Nop.Services.Media
                     _dbContext.ProxyCreationEnabled = originalProxyCreationEnabled;
                 }
             }
+        }
+
+        public bool UpdateProductDefatulePictureSize(int pictureId) 
+        {
+            var picture = GetPictureById(pictureId);
+            byte[] binary = LoadPictureBinary(picture);
+            MemoryStream ms1 = new MemoryStream(binary);
+            Image image = System.Drawing.Image.FromStream(ms1);
+            if (image.Width != 550 || image.Height == 360)
+            {
+                Bitmap newImg = new Bitmap(image, 550, 360);
+                ImageFormat format = image.RawFormat;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    if (format.Equals(ImageFormat.Jpeg))
+                    {
+                        newImg.Save(ms, ImageFormat.Jpeg);
+                    }
+                    else if (format.Equals(ImageFormat.Png))
+                    {
+                        newImg.Save(ms, ImageFormat.Png);
+                    }
+                    else if (format.Equals(ImageFormat.Bmp))
+                    {
+                        newImg.Save(ms, ImageFormat.Bmp);
+                    }
+                    else if (format.Equals(ImageFormat.Gif))
+                    {
+                        newImg.Save(ms, ImageFormat.Gif);
+                    }
+                    else if (format.Equals(ImageFormat.Icon))
+                    {
+                        newImg.Save(ms, ImageFormat.Icon);
+                    }
+                    byte[] buffer = new byte[ms.Length];
+                    ms.Seek(0, SeekOrigin.Begin);
+                    ms.Read(buffer, 0, buffer.Length);
+                    UpdatePicture(picture.Id, buffer, picture.MimeType, picture.SeoFilename, picture.AltAttribute, picture.TitleAttribute);
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion

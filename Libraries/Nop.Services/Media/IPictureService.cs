@@ -160,5 +160,7 @@ namespace Nop.Services.Media
         /// <param name="picturesIds">Pictures Ids</param>
         /// <returns></returns>
         IDictionary<int, string> GetPicturesHash(int [] picturesIds);
+
+        bool UpdateProductDefatulePictureSize(int pictureId);
     }
 }

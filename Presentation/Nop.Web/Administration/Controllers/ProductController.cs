@@ -96,6 +96,10 @@ namespace Nop.Admin.Controllers
         private readonly ISettingService _settingService;
         private readonly TaxSettings _taxSettings;
         private readonly VendorSettings _vendorSettings;
+        private readonly IWebHelper _webHelper;
+        private readonly IStoreContext _storeContext;
+        private readonly MediaSettings _mediaSettings;
+
 
         #endregion
 
@@ -145,7 +149,10 @@ namespace Nop.Admin.Controllers
             IDownloadService downloadService,
             ISettingService settingService,
             TaxSettings taxSettings,
-            VendorSettings vendorSettings)
+            VendorSettings vendorSettings,
+            IWebHelper webHelper,
+            IStoreContext storeContext,
+            MediaSettings mediaSettings)
         {
             this._productService = productService;
             this._productTemplateService = productTemplateService;
@@ -192,6 +199,9 @@ namespace Nop.Admin.Controllers
             this._settingService = settingService;
             this._taxSettings = taxSettings;
             this._vendorSettings = vendorSettings;
+            this._webHelper = webHelper;
+            this._storeContext = storeContext;
+            this._mediaSettings = mediaSettings;
         }
 
         #endregion 
@@ -263,6 +273,22 @@ namespace Nop.Admin.Controllers
         {
             foreach (var pp in product.ProductPictures)
                 _pictureService.SetSeoFilename(pp.PictureId, _pictureService.GetPictureSeName(product.Name));
+        }
+
+        [NonAction]
+        protected virtual void UpdateProductDefaultPictureSize(Product product)
+        {
+            var pictures = _pictureService.GetPicturesByProductId(product.Id);
+            var defaultPicture = pictures.FirstOrDefault();
+            if (defaultPicture != null)
+                if (_pictureService.UpdateProductDefatulePictureSize(defaultPicture.Id))
+                {
+                    int pictureSize = _mediaSettings.ProductThumbPictureSize;
+                    var cacheKey = string.Format("Nop.pres.product.detailspictures-{0}-{1}-{2}-{3}-{4}-{5}",
+                        product.Id, pictureSize, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(),
+                        _storeContext.CurrentStore.Id);
+                    _cacheManager.Remove(cacheKey);
+                }
         }
 
         [NonAction]
@@ -1155,6 +1181,9 @@ namespace Nop.Admin.Controllers
                 //warehouses
                 SaveProductWarehouseInventory(product, model);
 
+                //update the product's default picture size
+                UpdateProductDefaultPictureSize(product);
+
                 //quantity change history
                 _productService.AddStockQuantityHistoryEntry(product, product.StockQuantity, product.StockQuantity, product.WarehouseId,
                     _localizationService.GetResource("Admin.StockQuantityHistory.Messages.Edit"));
@@ -1305,6 +1334,9 @@ namespace Nop.Admin.Controllers
                 SaveDiscountMappings(product, model);
                 //picture seo names
                 UpdatePictureSeoNames(product);
+
+                //update the product's default picture size
+                UpdateProductDefaultPictureSize(product);
 
                 //back in stock notifications
                 if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock &&
