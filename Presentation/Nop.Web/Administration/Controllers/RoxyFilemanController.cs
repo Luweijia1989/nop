@@ -32,17 +32,19 @@ namespace Nop.Admin.Controllers
         private readonly IPermissionService _permissionService;
         private readonly HttpContextBase _context;
         private readonly HttpResponseBase _r;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
         #region Ctor
 
         //custom code by nopCommerce team
-        public RoxyFilemanController(IPermissionService permissionService, HttpContextBase context)
+        public RoxyFilemanController(IPermissionService permissionService, HttpContextBase context, IWorkContext workContext)
         {
             this._permissionService = permissionService;
             this._context = context;
             this._r = this._context.Response;
+            this._workContext = workContext;
         }
 
         #endregion
@@ -149,7 +151,16 @@ namespace Nop.Admin.Controllers
             }
 
             //custom code by nopCommerce team
-            var rootDirectory = GetSetting("FILES_ROOT");
+            //var rootDirectory = GetSetting("FILES_ROOT");
+            string rootDirectory = "";
+            try
+            {
+                rootDirectory = "~/Content/Images/" + _workContext.CurrentVendor.Id;
+            }
+            catch (Exception e)
+            {
+                rootDirectory = GetSetting("FILES_ROOT");
+            }
             if (!path.ToLowerInvariant().Contains(rootDirectory.ToLowerInvariant()))
                 path = rootDirectory;
 
@@ -233,7 +244,15 @@ namespace Nop.Admin.Controllers
             return ret;
         }
         protected virtual string GetFilesRoot(){
-            string ret = GetSetting("FILES_ROOT");
+            //string ret = GetSetting("FILES_ROOT");
+            string ret = "";
+            try
+            {
+                ret = "~/Content/Images/" + _workContext.CurrentVendor.Id;
+            } catch (Exception e)
+            {
+                ret = GetSetting("FILES_ROOT");
+            }
             if (GetSetting("SESSION_PATH_KEY") != "" && _context.Session[GetSetting("SESSION_PATH_KEY")] != null)
                 ret = (string)_context.Session[GetSetting("SESSION_PATH_KEY")];
         
@@ -440,7 +459,9 @@ namespace Nop.Admin.Controllers
         {
             DirectoryInfo d = new DirectoryInfo(GetFilesRoot());
             if(!d.Exists)
-                throw new Exception("Invalid files root directory. Check your configuration.");
+            {
+                d.Create();
+            }
             
             ArrayList dirs = ListDirs(d.FullName);
             dirs.Insert(0, d.FullName);

@@ -224,7 +224,8 @@ namespace Nop.Services.Security
                         AccessAdminPanel,
                         ManageProducts,
                         ManageProductReviews,
-                        ManageOrders
+                        ManageOrders,
+                        HtmlEditorManagePictures
                     }
                 }
             };
