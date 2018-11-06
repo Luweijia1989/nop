@@ -3,6 +3,7 @@
 <div class="header-links">
     <ul>
         @Html.Widget("header_links_before")
+        <li><a href="https://www.jianshu.com/p/d678853059e6">@T("Vendors.Guide")</a></li>
         <li><a href="@Url.RouteUrl("ApplyVendorAccount")">@T("Vendors.ApplyAccount")</a></li>
         @if (Model.IsAuthenticated)
         {
